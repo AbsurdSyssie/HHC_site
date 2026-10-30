@@ -11,16 +11,38 @@ import * as filters from "./lib/filters.js";
 const NHSUK_DIST = "node_modules/nhsuk-frontend/dist";
 
 export default function (eleventyConfig) {
+  return configureSite(eleventyConfig);
+}
+
+export function configureSite(eleventyConfig, { draftPreview = false } = {}) {
   const practiceDir = path.resolve(process.env.PRACTICE_DIR ?? "practice");
   const result = loadPractice(practiceDir);
 
+  // Only the separate local draft command may defer these two missing facts.
+  // Invalid supplied values and every other safety error still stop rendering.
+  const deferred = draftPreview
+    ? result.errors.filter((error) => {
+        const fields = {
+          "gp_earnings.financial_year": result.data.gp_earnings?.financial_year,
+          "site.content_last_reviewed": result.data.site?.content_last_reviewed,
+        };
+        return (
+          Object.hasOwn(fields, error.field) &&
+          (fields[error.field] == null || String(fields[error.field]).trim() === "")
+        );
+      })
+    : [];
+  const blockingErrors = result.errors.filter((error) => !deferred.includes(error));
+
   // Stop the build if anything patients rely on is missing or wrong.
   const report = formatProblems(result);
-  if (result.errors.length) {
+  if (blockingErrors.length) {
     throw new Error(`\n${report}\n\nRun "npm run check" for this list again.`);
   }
   if (report) console.warn(report);
+  if (draftPreview) console.warn("LOCAL DRAFT PREVIEW ONLY. Not approved for publication.");
 
+  eleventyConfig.addGlobalData("draftPreview", draftPreview);
   eleventyConfig.addGlobalData("practice", result.practice);
   eleventyConfig.addGlobalData(
     "practicePages",
@@ -47,7 +69,7 @@ export default function (eleventyConfig) {
   }
 
   const customDomain = result.practice.site?.custom_domain;
-  if (customDomain) {
+  if (customDomain && !draftPreview) {
     eleventyConfig.addTemplate("cname.njk", customDomain, {
       permalink: "/CNAME",
       eleventyExcludeFromCollections: true,

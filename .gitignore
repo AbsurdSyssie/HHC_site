@@ -3,6 +3,7 @@
 
 node_modules/
 /_site
+/_preview
 *.zip
 .DS_Store
 

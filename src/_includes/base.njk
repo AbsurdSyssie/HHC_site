@@ -33,13 +33,20 @@
 
 {% block head %}
   <meta name="description" content="{{ description or p.description or p.name }}">
-  {% if practice.demo %}<meta name="robots" content="noindex">{% endif %}
+  {% if draftPreview %}<meta name="robots" content="noindex, nofollow">{% elif practice.demo %}<meta name="robots" content="noindex">{% endif %}
   <link rel="stylesheet" href="/assets/nhsuk-frontend.min.css">
   <link rel="stylesheet" href="/assets/practice.css">
   <script type="module" src="/assets/init.js"></script>
 {% endblock %}
 
 {% block header %}
+  {% if draftPreview %}
+    {{ environmentBanner({
+      tag: "Draft preview only",
+      text: "Unreviewed content. Not approved for publication or patient use. Practice details still need confirmation.",
+      colour: "yellow"
+    }) }}
+  {% endif %}
   {% if practice.demo %}
     {{ environmentBanner({
       tag: "Demo",
@@ -106,7 +113,7 @@
       }
     ],
     meta: {
-      text: "Website content last reviewed " ~ (practice.site.content_last_reviewed | ukDate(false)) ~ ". Practice code " ~ p.ods_code ~ "."
+      text: ("Unreviewed draft preview. Not approved for publication. Practice code " ~ p.ods_code ~ ".") if draftPreview else ("Website content last reviewed " ~ (practice.site.content_last_reviewed | ukDate(false)) ~ ". Practice code " ~ p.ods_code ~ ".")
     },
     copyright: { text: "© " ~ p.name }
   }) }}

@@ -12,6 +12,7 @@
     "check": "node bin/check.js",
     "build": "eleventy",
     "start": "eleventy --serve",
+    "preview:draft": "node bin/preview-draft.js",
     "clean": "rm -rf _site",
     "test": "node --test",
     "lint": "npm run lint:js && npm run lint:format",

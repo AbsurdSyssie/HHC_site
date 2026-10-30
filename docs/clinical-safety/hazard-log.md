@@ -21,6 +21,10 @@ Ratings use the DCB0129 risk matrix: severity (1 minor to 5 catastrophic) and li
 
 ## Open actions
 
+### Local draft preview controls (H2, H3, H7)
+
+The explicitly selected `npm run preview:draft` command may defer only a missing GP earnings financial year and a missing content review date for local review. All other errors, including invalid supplied review dates, remain blocking. Every preview page carries an unreviewed, not-for-patient-use banner and footer and search `noindex, nofollow`; earnings without a confirmed year are withheld rather than invented. A fresh, separate `_preview/` folder prevents serving stale production content and is not used by the publishing workflow. Normal validation and production builds remain unchanged. Automated draft build tests verify these controls and production rejection (H2, H3, H7), and retained emergency links (H1). Preview serving binds all interfaces for trusted LAN review only. Search directives do not restrict access; operators must not expose or publish preview output. These controls have not yet had a clinical safety re-review.
+
 - Re-review ratings when the template changes in a way that affects a hazard or control.
 - Add automated accessibility testing (for example axe) to CI.
 - Consider a Content Security Policy generated from the trusted embed domains.

@@ -30,7 +30,11 @@ title: About us
 {% set e = practice.gp_earnings %}
 <h2>GP earnings</h2>
 <p>All GP practices are required to declare the mean earnings (average pay) for GPs working to deliver NHS services to patients at each practice.</p>
+{% if draftPreview and not (e.financial_year | default("", true) | trim) %}
+<p>GP earnings declaration not shown in this draft: the financial year has not been confirmed.</p>
+{% else %}
 <p>The average pay for GPs working in {{ p.name }} in the last financial year ({{ e.financial_year }}) was {{ e.mean_earnings | money }} before tax and National Insurance. This is for {{ e.full_time_gps }} full time {{ "GP" if e.full_time_gps == 1 else "GPs" }}, {{ e.part_time_gps }} part time {{ "GP" if e.part_time_gps == 1 else "GPs" }} and {{ e.locum_gps }} locum {{ "GP" if e.locum_gps == 1 else "GPs" }} who worked in the practice for more than 6 months.</p>
+{% endif %}
 {% endif %}
 
 <h2>Our policies</h2>
