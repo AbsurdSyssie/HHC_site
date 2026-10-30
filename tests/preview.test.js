@@ -40,6 +40,8 @@ test("local draft defers only missing review facts, never production gates (H1, 
       const html = fs.readFileSync(path.join(tmp, "draft", name), "utf8");
       assert.match(html, /Draft preview only/);
       assert.match(html, /Unreviewed content/);
+      assert.match(html, /Demonstration only, not the official practice website/);
+      assert.match(html, /Do not submit patient information/);
       assert.match(html, /Unreviewed draft preview/);
       assert.match(html, /<meta name="robots" content="noindex, nofollow">/);
       assert.match(html, /href="tel:999"/);
@@ -82,6 +84,55 @@ test("local draft defers only missing review facts, never production gates (H1, 
       '<script src="https://untrusted.example.com/widget.js"></script>';
     save();
     assert.notEqual(run("eleventy.preview.config.js", "bad-embed").status, 0);
+  } finally {
+    fs.rmSync(tmp, { recursive: true, force: true });
+  }
+});
+
+test("demo build is static, cleans stale drafts and never touches production output (H2, H3, H7)", () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "demo-build-test-"));
+  const root = process.cwd();
+  try {
+    for (const name of [
+      "node_modules",
+      "src",
+      "lib",
+      "eleventy.config.js",
+      "eleventy.preview.config.js",
+      "package.json",
+    ]) {
+      fs.symlinkSync(path.join(root, name), path.join(tmp, name));
+    }
+    fs.cpSync("tests/fixtures/demo-practice", path.join(tmp, "practice"), {
+      recursive: true,
+    });
+    fs.mkdirSync(path.join(tmp, "_site"));
+    fs.writeFileSync(path.join(tmp, "_site", "sentinel"), "production untouched");
+    fs.mkdirSync(path.join(tmp, "_preview"));
+    fs.writeFileSync(path.join(tmp, "_preview", "stale.html"), "stale");
+    const run = () =>
+      spawnSync("npm", ["run", "build:demo"], {
+        cwd: tmp,
+        env: { ...process.env, PRACTICE_DIR: path.join(tmp, "practice") },
+        encoding: "utf8",
+        timeout: 30000,
+      });
+    const built = run();
+    assert.equal(built.status, 0, built.stdout + built.stderr);
+    assert.ok(fs.existsSync(path.join(tmp, "_preview", "index.html")));
+    assert.ok(!fs.existsSync(path.join(tmp, "_preview", "stale.html")));
+    const file = path.join(tmp, "practice", "practice.yaml");
+    const data = load(fs.readFileSync(file, "utf8"));
+    data.contact.phone = "invalid";
+    fs.writeFileSync(file, dump(data));
+    const rejected = run();
+    assert.notEqual(rejected.status, 0);
+    assert.match(rejected.stdout + rejected.stderr, /contact.phone/);
+    assert.ok(!fs.existsSync(path.join(tmp, "_preview", "index.html")));
+    assert.equal(
+      fs.readFileSync(path.join(tmp, "_site", "sentinel"), "utf8"),
+      "production untouched",
+    );
   } finally {
     fs.rmSync(tmp, { recursive: true, force: true });
   }

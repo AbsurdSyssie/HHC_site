@@ -20,6 +20,7 @@ test("migration records stay outside patient pages", () => {
   const slugs = new Set(pages.map((page) => page.slug));
   assert.ok(!slugs.has("MIGRATION-QUERIES"));
   assert.ok(!slugs.has("CONTENT-INVENTORY"));
+  assert.ok(!slugs.has("DEMO-HOSTING"));
   assert.ok(fs.existsSync(path.join(dir, "MIGRATION-QUERIES.md")));
 });
 

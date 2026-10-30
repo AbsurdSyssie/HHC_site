@@ -2,6 +2,8 @@
 
 Initial migration performed 29 October 2026; migration and local draft preview rechecked 30 October 2026. This is a technical work record, **not practice confirmation, clinical safety sign-off, accessibility approval or permission to publish**.
 
+Subsequent personal demonstration hosting was explicitly authorised by the account owner on 30 October 2026. See [DEMO-HOSTING.md](DEMO-HOSTING.md) for the working Cloudflare Pages URL, pending personal hostname and current verification. This does not supersede the patient-site safety gates or authorise an official practice-domain move.
+
 ## Scope
 
 The initial migration changed only `practice/`. The separately reviewed local draft preview also changes Eleventy configuration, the base/about templates, preview tooling, tests, ignore rules and safety documentation. The urgent-help partial, validator, dependencies and workflows remain unchanged. Production validation still rejects the two deliberately missing facts. The user subsequently authorised saving this work in a new public GitHub copy, `AbsurdSyssie/HHC_site`, but not enabling hosting, Pages or DNS changes. Pushing source code is not patient-site approval.

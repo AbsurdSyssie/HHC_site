@@ -11,6 +11,7 @@
   "scripts": {
     "check": "node bin/check.js",
     "build": "eleventy",
+    "build:demo": "rm -rf _preview && eleventy --config=eleventy.preview.config.js --output=_preview",
     "start": "eleventy --serve",
     "preview:draft": "node bin/preview-draft.js",
     "clean": "rm -rf _site",
