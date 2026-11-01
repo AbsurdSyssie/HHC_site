@@ -118,6 +118,15 @@ test("practices in England must publish CQC rating and GP earnings", () => {
   assert.ok(errors.includes("gp_earnings"));
 });
 
+// H2: malformed supplied information must not pass build-time validation.
+test("supplied GP earnings must be an object", () => {
+  for (const earnings of [false, 0, [], "not an object"]) {
+    const data = demoData();
+    data.gp_earnings = earnings;
+    assert.ok(fields(check(data).errors).includes("gp_earnings"), String(earnings));
+  }
+});
+
 test("GP earnings figures must be numbers", () => {
   const data = demoData();
   data.gp_earnings.mean_earnings = "about 80k";
