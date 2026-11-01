@@ -1,9 +1,8 @@
 # SPDX-FileCopyrightText: 2026 Marcus Baw
 # SPDX-License-Identifier: MIT
 #
-# Checks every push to main and every pull request. The "site" job runs in
-# practices' own copies too; the licensing and workflow security jobs only
-# matter for the template itself, so they run in the upstream repository only.
+# Checks this repository's draft without treating incomplete practice details
+# as a CI outage. Production publication remains guarded by pages.yml.
 #
 # Action SHAs were verified against each action's latest release on
 # 2026-10-29 and carry the matching `# vX.Y.Z` comment per house style.
@@ -34,14 +33,31 @@ jobs:
       - run: npm ci
       - name: Lint and formatting
         run: npm run lint
-      - name: Check practice details
+      - name: Check fictional fixture
         run: npm run check
-      - name: Tests
-        run: npm test
-      - name: Build
+        env:
+          PRACTICE_DIR: tests/fixtures/demo-practice
+      - name: Fixture and migration tests
+        run: node --test tests/practice.test.js tests/preview.test.js practice/migration.test.js
+      - name: Build fictional fixture
         run: npm run build
-      - name: Validate HTML
+        env:
+          PRACTICE_DIR: tests/fixtures/demo-practice
+      - name: Validate fixture HTML
         run: npm run lint:html
+      - name: Build personal demonstration
+        run: npm run build:demo
+      - name: Validate personal demonstration HTML
+        run: npx html-validate '_preview/**/*.html'
+      - name: Verify production check remains blocked
+        run: |
+          if output=$(npm run check 2>&1); then
+            echo 'Expected the unapproved practice content to remain blocked.' >&2
+            exit 1
+          fi
+          printf '%s\n' "$output"
+          grep -q 'content_last_reviewed' <<< "$output"
+          grep -q 'earnings.*financial_year' <<< "$output"
 
   reuse:
     name: REUSE compliance
