@@ -158,6 +158,7 @@ See [s/README.md](s/README.md) for options.
 practice/
   practice.yaml       All the practice's details. This is the file practices edit.
   pages/*.md          The privacy notice, plus any extra pages, in Markdown.
+  views/register.njk  Optional developer-owned registration view (replaces /register/).
   images/             Optional logo and images.
 src/                  Page templates and layouts. Practices should not need to edit these.
 lib/practice.js       Loads and checks the practice details.
@@ -167,6 +168,8 @@ docs/                 Clinical safety documentation and images.
 ```
 
 The site is built with [Eleventy](https://www.11ty.dev/) and uses the NHS.UK frontend Nunjucks macros directly. When the site builds, `lib/practice.js` checks the practice details, and the build stops with plain-English explanations if anything patients rely on is missing or wrong: the phone number, opening hours for every day, the online consultation link, required published information, or leftover placeholder text such as TODO. Embedded code is only allowed from known suppliers unless the practice adds a domain explicitly.
+
+Developers can supply `practice/views/register.njk` to replace the standard registration page without a duplicate output route. It uses the existing page layout and NHS.UK macros directly, with no Markdown processing. Do not also supply `practice/pages/register.md`. Without a view, the standard registration page is unchanged. The practice validation and draft safety controls still apply.
 
 The `Publish to GitHub Pages` workflow builds and publishes on every push to `main`, both here (the demo) and in each practice's copy.
 

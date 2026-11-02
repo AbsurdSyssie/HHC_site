@@ -38,7 +38,7 @@ jobs:
         env:
           PRACTICE_DIR: tests/fixtures/demo-practice
       - name: Fixture and migration tests
-        run: node --test tests/practice.test.js tests/preview.test.js practice/migration.test.js
+        run: node --test tests/practice.test.js tests/preview.test.js tests/registration.test.js practice/migration.test.js
       - name: Build fictional fixture
         run: npm run build
         env:

@@ -60,6 +60,22 @@ export function configureSite(eleventyConfig, { draftPreview = false } = {}) {
     eleventyConfig.addFilter(name, fn);
   }
 
+  // A developer-owned registration view can replace the standard journey.
+  // Render Nunjucks directly: passing NHS macros through Markdown can break SVGs.
+  const registrationView = path.join(practiceDir, "views/register.njk");
+  if (fs.existsSync(registrationView)) {
+    if (result.pages.some((page) => page.slug === "register")) {
+      throw new Error(
+        "Use either practice/views/register.njk or practice/pages/register.md, not both.",
+      );
+    }
+    eleventyConfig.ignores.add("src/register.njk");
+    eleventyConfig.addTemplate(
+      "practice-views/register.njk",
+      fs.readFileSync(registrationView, "utf8"),
+      { layout: "page.njk", permalink: "/register/" },
+    );
+  }
   // Each Markdown file in practice/pages becomes a page at /<file-name>/
   for (const page of result.pages) {
     eleventyConfig.addTemplate(`practice-pages/${page.slug}.md`, page.content, {

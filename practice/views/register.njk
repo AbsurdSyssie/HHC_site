@@ -1,0 +1,14 @@
+---
+title: Register with us
+description: How to register with Handforth Health Centre.
+---
+{% from "nhsuk/components/action-link/macro.njk" import actionLink %}
+<h2>How to register</h2>
+{{ actionLink({ text: "Register with Handforth Online", href: "https://gp-registration.nhs.uk/N81070/gpregistration/landing" }) }}
+<p>You can also ask reception for a registration form.</p>
+
+<h2>Our practice area</h2>
+<p>We only accept applications from within our practice area. Contact reception to check whether your address is within the boundary.</p>
+
+<h2>After you register</h2>
+<p>Once you are registered, you can <a href="{{ practice.nhs_app_link.url }}">set up the {{ practice.nhs_app_link.name }}</a> to order prescriptions and see your health record.</p>
