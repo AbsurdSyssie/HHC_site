@@ -30,7 +30,7 @@ site:
   logo: ""
   # Only enter a date after the practice checks and approves the whole site.
   # The source observation date is not a content review or sign-off date.
-  content_last_reviewed: ""
+  content_last_reviewed: "3-11-2026"
 
 contact:
   phone: "01625 529421"
@@ -160,7 +160,7 @@ complaints:
 # Observed in the declaration posted 26 February 2026. "Last financial year"
 # is not a named reporting period. Do not infer it from the posting date.
 gp_earnings:
-  financial_year: ""
+  financial_year: "2025/2026"
   mean_earnings: 72086
   full_time_gps: 1
   part_time_gps: 8
