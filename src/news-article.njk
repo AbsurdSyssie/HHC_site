@@ -4,7 +4,7 @@ pagination:
   data: practice.news
   size: 1
   alias: article
-permalink: "/news/{{ article.slug }}/index.html"
+permalink: "/news/{{ article.slug or (article.title | slugify) }}/index.html"
 eleventyComputed:
   title: "{{ article.title }}"
 ---
