@@ -1,0 +1,42 @@
+---
+layout: base.njk
+pagination:
+  data: practice.news
+  size: 1
+  alias: article
+permalink: "/news/{{ article.slug }}/index.html"
+eleventyComputed:
+  title: "{{ article.title }}"
+---
+<div class="nhsuk-grid-row">
+  <article class="nhsuk-grid-column-two-thirds app-news-article">
+    <h1>{{ article.title }}</h1>
+    <p class="nhsuk-body-s app-news-date"><time datetime="{{ article.date }}">{{ article.date | ukDate(false) }}</time></p>
+    {% if article.image %}
+      <figure class="app-news-figure">
+        <img class="app-news-hero" src="{{ article.image | escape }}" alt="{{ article.image_alt | escape }}">
+        {% if article.image_credit %}<figcaption class="nhsuk-caption-s">{{ article.image_credit }}</figcaption>{% endif %}
+      </figure>
+    {% endif %}
+    {% if article.body %}
+      {% for paragraph in article.body %}<p>{{ paragraph }}</p>{% endfor %}
+    {% elif article.text %}
+      <p>{{ article.text }}</p>
+    {% endif %}
+    {% if article.links and article.links.length %}
+      <h2 class="nhsuk-heading-m">Further information</h2>
+      <ul class="nhsuk-list nhsuk-list--bullet">
+        {% for link in article.links %}
+          <li><a href="{{ link.url | escape }}">{{ link.label }}</a></li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+    <p class="nhsuk-u-margin-top-6"><a href="/news/">Back to all practice news</a></p>
+    {% if pagination.href.previous or pagination.href.next %}
+    <nav class="app-news-pagination" aria-label="News article navigation">
+      {% if pagination.href.previous %}<a href="{{ pagination.href.previous }}">← Previous article</a>{% else %}<span></span>{% endif %}
+      {% if pagination.href.next %}<a href="{{ pagination.href.next }}">Next article →</a>{% endif %}
+    </nav>
+    {% endif %}
+  </article>
+</div>
