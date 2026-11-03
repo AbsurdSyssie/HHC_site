@@ -39,3 +39,85 @@
   margin-bottom: 16px;
   padding-bottom: 16px;
 }
+
+/* Practice news cards and individual articles. */
+.app-news-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr));
+  gap: 24px;
+  margin-bottom: 48px;
+}
+
+.app-news-card {
+  background: #fff;
+  border: 1px solid #d8dde0;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.app-news-card-image {
+  display: block;
+  width: 100%;
+  height: 190px;
+  object-fit: cover;
+}
+
+.app-news-card-content {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.app-news-card-content h2 {
+  margin-bottom: 12px;
+}
+
+.app-news-date {
+  color: #4c6272;
+}
+
+.app-news-read-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: bold;
+  margin-top: auto;
+}
+
+.app-news-arrow {
+  background-color: #007f3b;
+  border-radius: 50%;
+  color: #fff;
+  display: inline-block;
+  font-size: 20px;
+  height: 24px;
+  line-height: 22px;
+  text-align: center;
+  width: 24px;
+}
+
+.app-news-figure {
+  margin: 0 0 32px;
+}
+
+.app-news-hero {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.app-news-figure figcaption {
+  color: #4c6272;
+  margin-top: 8px;
+}
+
+.app-news-pagination {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  margin: 40px 0;
+  border-top: 1px solid #d8dde0;
+  padding-top: 20px;
+}
