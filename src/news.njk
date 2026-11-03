@@ -9,15 +9,15 @@ title: News
       {% for item in practice.news | sort(true, false, "date") %}
         <article class="app-news-card">
           {% if item.image %}
-            <a href="/news/{{ item.slug }}/" aria-label="Read {{ item.title | escape }}">
+            <a href="/news/{{ item.slug or (item.title | slugify) }}/" aria-label="Read {{ item.title | escape }}">
               <img class="app-news-card-image" src="{{ item.image | escape }}" alt="{{ item.image_alt | escape }}" loading="lazy">
             </a>
           {% endif %}
           <div class="app-news-card-content">
-            <h2 class="nhsuk-heading-s"><a href="/news/{{ item.slug }}/">{{ item.title }}</a></h2>
+            <h2 class="nhsuk-heading-s"><a href="/news/{{ item.slug or (item.title | slugify) }}/">{{ item.title }}</a></h2>
             <p class="nhsuk-body-s app-news-date">{{ item.date | ukDate(false) }}</p>
             <p>{{ item.summary or item.text }}</p>
-            <a class="app-news-read-more" href="/news/{{ item.slug }}/" aria-label="Read more about {{ item.title | escape }}"><span aria-hidden="true" class="app-news-arrow">→</span> Read more</a>
+            <a class="app-news-read-more" href="/news/{{ item.slug or (item.title | slugify) }}/" aria-label="Read more about {{ item.title | escape }}"><span aria-hidden="true" class="app-news-arrow">→</span> Read more</a>
           </div>
         </article>
       {% endfor %}
