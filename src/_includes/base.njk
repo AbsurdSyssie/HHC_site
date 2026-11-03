@@ -70,7 +70,9 @@
 {% endblock %}
 
 {% block beforeContent %}
-  {% if page.url != "/" %}
+  {% if article %}
+    {{ breadcrumb({ items: [{ href: "/", text: "Home" }, { href: "/news/", text: "Practice news" }] }) }}
+  {% elif page.url != "/" %}
     {{ breadcrumb({ items: [{ href: "/", text: "Home" }] }) }}
   {% endif %}
 {% endblock %}
