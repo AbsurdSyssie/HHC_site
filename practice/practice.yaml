@@ -185,5 +185,11 @@ accessibility:
     - This draft website has not yet had a practice accessibility review or accessibility audit.
     - External services and documents are provided by other organisations and need accessibility checks.
 
-# Historical campaigns and clinical news are inventoried, not republished.
-news: []
+# News entries require practice review before publication.
+news:
+  - date: "2026-10-03"
+    title: "National Hygiene Week, 7th to 13th October"
+    text: >-
+      National Hygiene Week takes place from 7 to 13 October 2026.
+      Read the original announcement on the Handforth Health Centre website:
+      https://www.handforthhealthcentre.nhs.uk/2026/10/03/national-hygiene-week-7th-13th-october/
