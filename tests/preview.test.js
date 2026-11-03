@@ -121,6 +121,14 @@ test("demo build is static, cleans stale drafts and never touches production out
     assert.equal(built.status, 0, built.stdout + built.stderr);
     assert.ok(fs.existsSync(path.join(tmp, "_preview", "index.html")));
     assert.ok(!fs.existsSync(path.join(tmp, "_preview", "stale.html")));
+
+    // Demo news entries have no explicit slugs. They must not collide with
+    // /news/ or with one another when building individual article pages.
+    const newsIndex = fs.readFileSync(path.join(tmp, "_preview", "news/index.html"), "utf8");
+    for (const slug of ["our-new-website", "changes-to-how-you-contact-us"]) {
+      assert.ok(fs.existsSync(path.join(tmp, "_preview", "news", slug, "index.html")));
+      assert.match(newsIndex, new RegExp(`href="/news/${slug}/"`));
+    }
     const file = path.join(tmp, "practice", "practice.yaml");
     const data = load(fs.readFileSync(file, "utf8"));
     data.contact.phone = "invalid";
