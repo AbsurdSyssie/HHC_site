@@ -185,11 +185,32 @@ accessibility:
     - This draft website has not yet had a practice accessibility review or accessibility audit.
     - External services and documents are provided by other organisations and need accessibility checks.
 
-# News entries require practice review before publication.
+# News articles appear as cards on /news/ and on their own /news/<slug>/ pages.
+# Source text and imagery need practice review before publication.
 news:
   - date: "2026-10-03"
-    title: "National Hygiene Week, 7th to 13th October"
-    text: >-
-      National Hygiene Week takes place from 7 to 13 October 2026.
-      Read the original announcement on the Handforth Health Centre website:
-      https://www.handforthhealthcentre.nhs.uk/2026/10/03/national-hygiene-week-7th-13th-october/
+    slug: national-hygiene-week
+    title: "National Hygiene Week 7th-13th October"
+    summary: >-
+      Volunteers collect donated hygiene products and distribute them through
+      local projects to people who need them.
+    image: "https://ucarecdn.com/cd845d4d-9f51-415c-83bf-1048842c1091/-/format/auto/-/preview/3000x3000/-/quality/lighter/_MG_2523Top%20of%20donation%20bin-min.jpg"
+    image_alt: "Yellow Hygiene Bank donation box for donated toiletries"
+    image_credit: "Illustrative image: The Hygiene Bank via TOGETHERBAND. Not the original article photo."
+    body:
+      - >-
+        National Hygiene Week highlights hygiene poverty, when people cannot
+        afford essential toiletries and personal care products.
+      - >-
+        The Hygiene Bank works with volunteer-led local projects that collect
+        donated hygiene products and distribute them to people who need them.
+      - >-
+        Find out more about National Hygiene Week, the charity's work and
+        healthy living information using the links below.
+    links:
+      - label: "National Hygiene Week"
+        url: "https://thehygienebank.com/national-hygiene-week/"
+      - label: "Healthy living – NHS"
+        url: "https://www.nhs.uk/live-well/"
+      - label: "Original Handforth Health Centre article"
+        url: "https://www.handforthhealthcentre.nhs.uk/2026/10/03/national-hygiene-week-7th-13th-october/"
