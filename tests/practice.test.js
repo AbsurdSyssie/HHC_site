@@ -3,8 +3,12 @@
 
 import { test } from "node:test";
 import assert from "node:assert/strict";
+import fs from "node:fs";
+import os from "node:os";
+import path from "node:path";
 import {
   readPracticeFile,
+  loadPractice,
   listPages,
   validatePractice,
   normalisePractice,
@@ -192,4 +196,33 @@ test("embedHosts finds every external host in embed code", () => {
     <link rel="stylesheet" href="https://c.example/s.css">
     <img src="/local.png" alt="">`;
   assert.deepEqual(embedHosts(html).sort(), ["a.example", "b.example", "c.example"]);
+});
+
+test("Pages CMS notices load into homepage notices and respect publishing and expiry", () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "cms-notices-"));
+  const practiceDir = path.join(tmp, "practice");
+  try {
+    fs.cpSync(DEMO, practiceDir, { recursive: true });
+    const noticesDir = path.join(practiceDir, "notices");
+    fs.mkdirSync(noticesDir);
+    fs.writeFileSync(
+      path.join(noticesDir, "telephone-outage.yaml"),
+      'title: Telephone outage\\ntext: Our phones are unavailable.\\npublished: true\\nexpires: "2026-10-29"\\n'.replaceAll("\\\\n", "\\n"),
+    );
+    fs.writeFileSync(
+      path.join(noticesDir, "draft.yaml"),
+      'title: Draft notice\\ntext: Not visible.\\npublished: false\\n'.replaceAll("\\\\n", "\\n"),
+    );
+    fs.writeFileSync(
+      path.join(noticesDir, "expired.yaml"),
+      'title: Old notice\\ntext: Expired.\\npublished: true\\nexpires: "2026-10-27"\\n'.replaceAll("\\\\n", "\\n"),
+    );
+    const result = loadPractice(practiceDir, { today: TODAY });
+    assert.deepEqual(result.errors, []);
+    assert.deepEqual(result.practice.active_notices.map((n) => n.title), ["Telephone outage"]);
+    const nextDay = loadPractice(practiceDir, { today: new Date("2026-10-30T12:00:00Z") });
+    assert.ok(nextDay.practice.active_notices.every((n) => n.title !== "Telephone outage"));
+  } finally {
+    fs.rmSync(tmp, { recursive: true, force: true });
+  }
 });
