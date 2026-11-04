@@ -49,15 +49,8 @@ jobs:
         run: npm run build:demo
       - name: Validate personal demonstration HTML
         run: npx html-validate '_preview/**/*.html'
-      - name: Verify production check remains blocked
-        run: |
-          if output=$(npm run check 2>&1); then
-            echo 'Expected the unapproved practice content to remain blocked.' >&2
-            exit 1
-          fi
-          printf '%s\n' "$output"
-          grep -q 'content_last_reviewed' <<< "$output"
-          grep -q 'earnings.*financial_year' <<< "$output"
+      - name: Validate current practice configuration
+        run: npm run check
 
   reuse:
     name: REUSE compliance

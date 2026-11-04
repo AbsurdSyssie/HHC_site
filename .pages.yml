@@ -1,0 +1,39 @@
+# Pages CMS: staff can edit only public homepage announcements.
+# Each saved notice becomes a separate YAML file in practice/notices/.
+content:
+  - name: homepage_notices
+    label: Homepage announcements
+    type: collection
+    path: practice/notices
+    format: yaml
+    filename: "{year}-{month}-{day}-{primary}.yaml"
+    operations:
+      create: true
+      rename: false
+      delete: true
+    view:
+      primary: title
+      fields: [title, published, expires]
+    fields:
+      - name: title
+        label: Headline
+        type: string
+        required: true
+        description: A short, clear heading for the homepage banner.
+      - name: text
+        label: Announcement
+        type: text
+        required: true
+        description: Public information only. Do not include identifiable patient information or medical advice.
+      - name: published
+        label: Show on homepage
+        type: boolean
+        default: true
+        description: Turn off to save a draft or remove this announcement from the homepage.
+      - name: expires
+        label: Expiry date (optional)
+        type: date
+        default: ""
+        options:
+          format: yyyy-MM-dd
+        description: Hides this announcement on rebuilds after the chosen date. Turn off Show on homepage to remove immediately on the next deployment.
