@@ -31,6 +31,10 @@ jobs:
           node-version-file: .nvmrc
           cache: npm
       - run: npm ci
+      - name: Show formatting difference for new CMS test
+        run: |
+          npx prettier tests/practice.test.js > /tmp/cms-prettier.js
+          diff -u tests/practice.test.js /tmp/cms-prettier.js || true
       - name: Lint and formatting
         run: npm run lint
       - name: Check fictional fixture
