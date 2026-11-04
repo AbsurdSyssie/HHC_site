@@ -230,7 +230,10 @@ expires: "2026-10-27"
     );
     const result = loadPractice(practiceDir, { today: TODAY });
     assert.deepEqual(result.errors, []);
-    assert.deepEqual(result.practice.active_notices.map((n) => n.title), ["Telephone outage"]);
+    assert.deepEqual(
+      result.practice.active_notices.map((n) => n.title),
+      ["Telephone outage"],
+    );
     const nextDay = loadPractice(practiceDir, { today: new Date("2026-10-30T12:00:00Z") });
     assert.ok(nextDay.practice.active_notices.every((n) => n.title !== "Telephone outage"));
   } finally {
